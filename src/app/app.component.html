@@ -1,21 +1,36 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
+<div class="container mt-5">
+  <h1 class="text-primary mb-3 text-center">
+    Angular {{ title }}!
   </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+
+  <p *ngIf="loading">Loading...</p>
+  <ul class="list-group mb-4">
+    <li *ngFor="let post of currentPosts$ | async; trackBy: trackByFn" class="list-group-item">{{post.title}}</li>
+  </ul>
+  <nav>
+    <p>
+      Page {{ currentPage }} of {{ totalPages }} &nbsp;
+      (Items per page: {{postsPerPage }} &nbsp; {{ indexOfFirstPost + 1 }} - {{ indexOfLastPost }} of {{ totalPosts }})
+    </p>
+    <ul class="pagination">
+      <li class="page-item" [ngClass]="{'disabled': disablePrevious()}">
+        <button [disabled]="disablePrevious()" class="page-link" aria-label="Previous" (click)="previous()">
+          <span aria-hidden="true">&laquo;</span>
+        </button>
+      </li>
+      <li class="page-item" *ngFor="let pageNumber of pageNumbers$ | async; trackBy: trackByFn" [ngClass]="{'active': activeDisableCurrentLink(pageNumber)}">
+        <button class="page-link" [disabled]="activeDisableCurrentLink(pageNumber)" (click)="paginate(pageNumber)">{{ pageNumber }}</button>
+      </li>
+      <li class="page-item" [ngClass]="{'disabled': disableNext()}">
+        <button [disabled]="disableNext()" class="page-link" aria-label="Next" (click)="next()">
+          <span aria-hidden="true">&raquo;</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+
+
 
 <router-outlet></router-outlet>
